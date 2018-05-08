@@ -15,29 +15,27 @@
 <body>
     <div class="container">
 
-        <form>
 
-            <div class="jumbotron">
-                <h1>Rotação de Matriz</h1>
-                <a href="https://github.com/juninmd/rotacao-matriz" target='_blank'>https://github.com/juninmd/rotacao-matriz</a>
+        <div class="jumbotron">
+            <h1>Rotação de Matriz</h1>
+            <a href="https://github.com/juninmd/rotacao-matriz" target='_blank'>https://github.com/juninmd/rotacao-matriz</a>
 
-                <div class="form-group">
-                    <label for="txtNumero">Por favor, informe a quantidade.</label>
-                    <input class="form-control" placeholder="Entre 2 e 27" id="txtNumero" onchange="rotate('1')" type="number" min="1" max="27"
-                        required>
-                </div>
-
-                <button class="btn btn-primary" onclick="rotate('1')" type="button">Normal</button>
-                <button class="btn btn-primary" onclick="rotate('2')" type="button">Esquerda</button>
-                <button class="btn btn-primary" onclick="rotate('3')" type="button">Direita</button>
-
-                <div id="alerta" class="alert alert-danger" style="display: none">
-                </div>
-
-                <div id="result" style="padding-top: 12px">
-                </div>
+            <div class="form-group">
+                <label for="txtNumero">Por favor, informe a quantidade.</label>
+                <input class="form-control" placeholder="Entre 2 e 27" id="txtNumero" onchange="rotate('1')" type="number" min="1" max="27"
+                    required>
             </div>
-        </form>
+
+            <button class="btn btn-primary" onclick="rotate('1')" type="button">Normal</button>
+            <button class="btn btn-primary" onclick="rotate('2')" type="button">Esquerda</button>
+            <button class="btn btn-primary" onclick="rotate('3')" type="button">Direita</button>
+
+            <div id="alerta" class="alert alert-danger" style="display: none">
+            </div>
+
+            <div id="result" style="padding-top: 12px">
+            </div>
+        </div>
     </div>
 
 
