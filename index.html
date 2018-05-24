@@ -1,147 +1,146 @@
 <head>
     <meta charset="UTF8">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-        crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Rotação de Matriz</title>
 </head>
 
-<body>
-    <div class="container">
-
-
-        <div class="jumbotron">
-            <h1>Rotação de Matriz</h1>
-            <a href="https://github.com/juninmd/rotacao-matriz" target='_blank'>https://github.com/juninmd/rotacao-matriz</a>
-
-            <div class="form-group">
-                <label for="txtNumero">Por favor, informe a quantidade.</label>
-                <input class="form-control" placeholder="Entre 2 e 27" id="txtNumero" onchange="rotate('1')" type="number" min="1" max="27"
-                    required>
-            </div>
-
-            <button class="btn btn-primary" onclick="rotate('1')" type="button">Normal</button>
-            <button class="btn btn-primary" onclick="rotate('2')" type="button">Esquerda</button>
-            <button class="btn btn-primary" onclick="rotate('3')" type="button">Direita</button>
-
-            <div id="alerta" class="alert alert-danger" style="display: none">
-            </div>
-
-            <div id="result" style="padding-top: 12px">
-            </div>
-        </div>
-    </div>
-
-
-</body>
-
 <script>
-    function rotate(tipo) {
-        let tamLados = Number(document.getElementById('txtNumero').value);
+    /**
+    *    O Alfabeto é um array, arrays são acessados 
+    *    por um indíce, cada letra possuí uma posição.
+    *    Sendo o A = 0, B = 1, B = 2.
+    *    Então quando eu usar o código 
+    *    alfabeto[0] ele vai me retornar = A
+    */
+    const alfabeto = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
-        let divAlerta = document.getElementById('alerta');
-        let div = document.getElementById('result');
+    function iniciar() {
+        const tamLados = Number(prompt("Quantos elementos cada lado da matriz deverá ter?"));
 
-        if (!(tamLados >= 2 && tamLados <= 27)) {
-            divAlerta.style = 'display:block;margin-top: 12px';
-            divAlerta.innerHTML = 'Informe um número entre 2 e 27';
-            div.innerHTML = '';
-            return false;
+        // Aqui validamos se o usuário informou algum número entre 2 e 26, assim invertemos a condiição para ficar mais fácil validar com a exclamação.
+        // Caso informe algum texto, irá retonar como NaN
+        if (!(tamLados >= 2 && tamLados < 27) || tamLados === NaN) {
+            alert('Informe um número entre 2 e 26');
+            return;
         }
-        else {
-            divAlerta.style = 'display:none;';
-        }
 
-        div.innerHTML = 'carregando...';
-        let arr = montaArray(Number(tipo), tamLados);
-        geraHtml(arr, tamLados);
+        // Aqui o algoritmo gera a matriz normal, para esquerda e para a direita
+        const matrizes = [criaMatriz(tamLados), esquerda(tamLados), direita(tamLados)]
 
-        return false
+        // Para cada matriz é feita a gravação no html.
+        matrizes.forEach(matriz => {
+            document.write(geraHtml(matriz));
+            document.write('<br>');
+        });
     }
 
+    // Nessa função criamos a matriz normal
+    // Seguindo a ordem do alfabeto
+    // Recebendo o tamanho de lados
+    function criaMatriz(tamLados) {
+        // Instanciamos a matriz
+        let matriz = [];
 
-    function montaArray(tipo, tamLados) {
-        let arr = [];
-        for (let linha = 0; linha < tamLados; linha++) {
-            arr[linha] = [];
-            for (let coluna = 0; coluna < tamLados; coluna++) {
-                arr[linha][coluna] = 0;
-            }
-        }
+        // Começamos contando do zero (pos o alfabeto começa pelo indice 0)
+        let n = 0;
 
-        switch (tipo) {
-            case 1:
-                return normal(arr, 0, tamLados);
-            case 2:
-                return direita(arr, 0, tamLados);
-            case 3:
-                return esquerda(arr, 0, tamLados);
-        }
-
-        return arr;
-    }
-
-    function normal(arr, n, tamLados) {
-        for (let linha = 0; linha < tamLados; linha++) {
-            for (let coluna = 0; coluna < tamLados; coluna++) {
+        // Fazemos um for para as lihas
+        for (let x = 0; x < tamLados; x++) {
+            matriz[x] = [];
+            // Esse for é para as colunas
+            for (let y = 0; y < tamLados; y++) {
+                matriz[x][y] = alfabeto[n];
+                // Após inserir o valor, adicionamos mais um para pegar a próxima letra
                 n++;
-                arr[linha][coluna] = n;
+                // Caso tenha finalizado o Z, retornamos a letra A
+                if (n === 26) {
+                    n = 0;
+                }
             }
         }
-        return arr;
+        return matriz;
     }
 
-    function direita(arr, n, tamLados) {
-        for (let linha = 0; linha < tamLados; linha++) {
-            for (let coluna = tamLados - 1; coluna >= 0; coluna--) {
+    function esquerda(tamLados) {
+        // Aqui pegamos a matriz já gerada
+        // aproveitamos a sua estrutura
+        let matriz = criaMatriz(tamLados)
+        // começamos a contar do zero
+        let n = 0;
+        // começamos a contar a linha debaixo para cima
+        for (let y = tamLados - 1; y >= 0; y--) {
+            for (let x = 0; x < tamLados; x++) {
+                matriz[x][y] = alfabeto[n];
                 n++;
-                arr[coluna][linha] = n;
+                // Caso tenha finalizado o Z, retornamos a letra A
+                if (n === 26) {
+                    n = 0;
+                }
             }
         }
-
-        return arr;
+        return matriz;
     }
 
-    function esquerda(arr, n, tamLados) {
-        for (let coluna = tamLados - 1; coluna >= 0; coluna--) {
-            for (let linha = 0; linha < tamLados; linha++) {
+    function direita(tamLados) {
+        // Aqui pegamos a matriz já gerada
+        // aproveitamos a sua estrutura
+        let matriz = criaMatriz(tamLados)
+        // começamos a contar do zero
+        let n = 0;
+        for (let x = 0; x < tamLados; x++) {
+            // a coluna é preenchida debaixo pra cima
+            for (let y = tamLados - 1; y >= 0; y--) {
+                matriz[y][x] = alfabeto[n];
                 n++;
-                arr[linha][coluna] = n;
+                // Caso tenha finalizado o Z, retornamos a letra A
+                if (n === 26) {
+                    n = 0;
+                }
             }
         }
-
-        return arr;
+        return matriz;
     }
 
-    function geraHtml(arr, tamLados) {
-        let table = (inner) => `<table class="table table-dark table-sm">
-    <tbody>
-    ${inner}
-    </tbody>
-    </table>`;
+    function geraHtml(matriz) {
 
-        let td = (value) => `<td>${value}</td>`;
-        let tr = (value) => `<tr>${value}</tr>`;
+        // criamos uma função para colocar o corpo da nossa tabela
+        const table = (inner) => `<table><tbody>${inner}</tbody></table>`;
 
-        let ihtml = ``;
-        for (let i = 0; i < tamLados; i++) {
-            let jhtml = ``;
-            for (let j = 0; j < tamLados; j++) {
-                jhtml += td(arr[i][j]);
+        // aqui fica a nossa coluna
+        const td = (value) => `<td>${value}</td>`;
+        // Aqui fica nossa linha
+        const tr = (value) => `<tr>${value}</tr>`;
+
+        // vamos armazenar todas as trs
+        let trs = '';
+        for (let i = 0; i < matriz.length; i++) {
+            // vamos armazenar todas as tds
+            let tds = '';
+            for (let j = 0; j < matriz.length; j++) {
+                tds += td(matriz[i][j]);
             }
-            ihtml += tr(jhtml);
+            trs += tr(tds);
         }
-
-
-        let tablehtml = table(ihtml);
-
-        let div = document.getElementById('result');
-        div.innerHTML = tablehtml;
+        // retornamos todo o html pronto da tabela
+        return table(trs);
     }
+
+    // iniciamos nosso código
+    iniciar();
 </script>
+
+<style>
+    /* Estilizamos a nossa tabela para ficar mais vísivel */
+
+    table {
+        margin: 0px;
+        padding: 0px;
+        border-spacing: 0px;
+    }
+
+    td {
+        border: 2px outset #000;
+        text-align: center;
+        width: 30px;
+        height: 30px;
+    }
+</style>
