@@ -18,8 +18,8 @@
 
         // Aqui validamos se o usuário informou algum número entre 2 e 26, assim invertemos a condiição para ficar mais fácil validar com a exclamação.
         // Caso informe algum texto, irá retonar como NaN
-        if (!(tamLados >= 2 && tamLados < 27) || tamLados === NaN) {
-            alert('Informe um número entre 2 e 26');
+        if (!(tamLados >= 2 && tamLados <= 5) || tamLados === NaN) {
+            alert('Informe um número entre 2 e 5');
             return;
         }
 
