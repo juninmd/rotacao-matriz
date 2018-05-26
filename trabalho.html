@@ -1,0 +1,95 @@
+<head>
+    <meta charset="UTF8">
+    <title>Trabalho Fausto</title>
+</head>
+<script>
+    // Cada letra equivale a um número, iniciando pelo 0 sendo o a.
+    const letras = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+
+    // constuímos nossa matriz sendo um array.
+    // fazemos um for de linhas e outro para colunas
+    // Começamos contando do zero e através do número sabemos qual é a ordem da letra.
+    const matrizBase = (tamLados) => {
+        let contador = 0;
+        let matriz = [];
+        for (let x = 0; x < tamLados; x++) {
+            matriz[x] = [];
+            for (let y = 0; y < tamLados; y++) {
+                matriz[x][y] = letras[contador];
+                contador++;
+            }
+        }
+        return matriz;
+    }
+
+    // começamos a contar do zero     
+    // a primeira letra é impressa na ultima coluna a direita, assim a próxima é impressa logo abaixo       
+    const rodaDireita = (tamLados) => {
+        let matriz = matrizBase(tamLados)
+        let contador = 0;
+        for (let y = tamLados - 1; y >= 0; y--) {
+            for (let x = 0; x < tamLados; x++) {
+                matriz[x][y] = letras[contador];
+                contador++;
+            }
+        }
+        return matriz;
+    }
+
+    // começamos a contar do zero, a coluna é preenchida debaixo pra cima
+    // a primeira letra é impressa na ultima linha a esquerda, assim a próxima é impressa logo acima
+    const rodaEsquerda = (tamLados) => {
+        let matriz = matrizBase(tamLados)
+        let contador = 0;
+        for (let x = 0; x < tamLados; x++) {
+            for (let y = tamLados - 1; y >= 0; y--) {
+                matriz[y][x] = letras[contador];
+                contador++;
+            }
+        }
+        return matriz;
+    }
+
+    Array.prototype.montaTabela = function () {
+        const matriz = this;
+        // vamos salvar as linhas
+        let linhas = '';
+        for (let i = 0; i < matriz.length; i++) {
+            // vamos salvar as colunas
+            let colunas = '';
+            for (let j = 0; j < matriz.length; j++) {
+                colunas += `<td>${matriz[i][j]}</td>`;
+            }
+            linhas += `<tr>${colunas}</tr>`;
+        }
+        // aqui voltamos a tabela
+        document.writeln(`<table><tbody>${linhas}</tbody></table><br>`);
+    };
+
+    // aqui a função é invocada
+    (() => {
+        const tamLados = Number(prompt("Por favor, informe a quantidade de elementos."));
+        // O número inputado deve ser válido e estar entre 2 e 5
+        if (!(tamLados >= 2 && tamLados <= 5) || tamLados === NaN) {
+            alert('Por favor, informe um número entre 2 e 5');
+            return window.location.reload();
+        }
+
+        // imprimimos na tela
+        matrizBase(tamLados).montaTabela();
+        rodaDireita(tamLados).montaTabela();
+        rodaEsquerda(tamLados).montaTabela();
+    })();
+
+
+</script>
+
+<style>
+    td {
+        border: 1px outset black;
+        text-align: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 6px;
+    }
+</style>
